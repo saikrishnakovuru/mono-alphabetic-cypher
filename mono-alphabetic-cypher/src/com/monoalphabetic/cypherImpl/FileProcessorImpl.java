@@ -19,7 +19,7 @@ public class FileProcessorImpl implements FileProcessor {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
+		
 		return parsedInputText;
 	}
-
 }
