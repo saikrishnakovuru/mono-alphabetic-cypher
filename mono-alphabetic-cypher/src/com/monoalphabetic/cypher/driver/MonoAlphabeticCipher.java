@@ -33,7 +33,6 @@ public class MonoAlphabeticCipher {
 			System.exit(1);
 		}
 
-//		String argOne = args[0].contains(".txt") ? args[0] : args[0]+".txt";
 		String argOne = null;
 		if (new File(args[0]).exists()) {
 			if (args[0].contains(".txt"))

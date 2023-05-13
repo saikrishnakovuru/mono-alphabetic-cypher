@@ -91,7 +91,6 @@ public class EncryptionAndDecryptionImpl implements EncryptionAndDecryption {
 		for (int i = 0; i < alphabetsAndNumerics.length(); i++) {
 			cypherText += alphabetsAndNumerics.charAt(arr[i]);
 		}
-
 	}
 }
 
