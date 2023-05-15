@@ -1,16 +1,18 @@
 package com.monoalphabetic.cypherImpl;
 
 import java.io.FileWriter;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import com.monoalphabetic.cypher.EncryptionAndDecryption;
-
 import java.util.Random;
 import java.util.Set;
 import java.util.StringJoiner;
+import java.util.stream.Collectors;
+
+import com.monoalphabetic.cypher.EncryptionAndDecryption;
 
 public class EncryptionAndDecryptionImpl implements EncryptionAndDecryption {
 	private String givenInputText;
@@ -50,8 +52,8 @@ public class EncryptionAndDecryptionImpl implements EncryptionAndDecryption {
 			for (int i = 0; i < givenInputText.length(); i++) {
 				if (plainAndCypherPairs.containsKey(givenInputText.charAt(i))
 						|| plainAndCypherPairs.containsValue(givenInputText.charAt(i))) {
-					text = encriptionOrDecription == 1 ? text + plainAndCypherPairs.get(givenInputText.charAt(i))
-							: text + decription(i);
+					text += encriptionOrDecription == 1 ? plainAndCypherPairs.get(givenInputText.charAt(i))
+							: decription(i);
 				}
 			}
 			output.write(text);
@@ -79,17 +81,25 @@ public class EncryptionAndDecryptionImpl implements EncryptionAndDecryption {
 	}
 
 	private void generateRandomCypherText() {
+		List<Character> characters = alphabetsAndNumerics.chars().mapToObj(c -> (char) c).collect(Collectors.toList());
+
+		Collections.shuffle(characters, random);
+
+		StringBuilder sb = new StringBuilder();
+		characters.forEach(sb::append);
+
+		cypherText = sb.toString();
+	}
+
+	private void generateRandomCypherText_____() {
 		while (true) {
 			indexSet.add(random.nextInt(alphabetsAndNumerics.length()));
 			if (indexSet.size() == alphabetsAndNumerics.length())
 				break;
 		}
 
-		Integer[] arr = new Integer[indexSet.size()];
-		arr = indexSet.toArray(arr);
-
 		for (int i = 0; i < alphabetsAndNumerics.length(); i++) {
-			cypherText += alphabetsAndNumerics.charAt(arr[i]);
+			cypherText += alphabetsAndNumerics.charAt((int) indexSet.toArray()[i]);
 		}
 	}
 }
