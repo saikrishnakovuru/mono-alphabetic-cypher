@@ -7,15 +7,22 @@ public class TestRepeatedCharacter {
 
 	private Set<Character> repeatedChar = new LinkedHashSet<Character>();
 
-	private void testRepeatedCharacter(String str) {
-		str.chars().forEach(val -> {
-			if (!repeatedChar.contains((char) val))
-				repeatedChar.add((char) val);
-			else
-				System.out.println("Repeated char is " + (char) val);
-		});
-		System.out.println(repeatedChar);
+	private void lambdaFunct(int val) {
+		if (!repeatedChar.contains((char) val))
+			repeatedChar.add((char) val);
+		else
+			System.out.println("Repeated char is " + (char) val);
+	}
 
+	private void testRepeatedCharacter(String str) {
+//		str.chars().forEach(val -> {
+//			if (!repeatedChar.contains((char) val))
+//				repeatedChar.add((char) val);
+//			else
+//				System.out.println("Repeated char is " + (char) val);
+//		});
+		str.chars().forEach(this::lambdaFunct);
+		System.out.println(repeatedChar);
 	}
 
 	public static void main(String[] args) {
