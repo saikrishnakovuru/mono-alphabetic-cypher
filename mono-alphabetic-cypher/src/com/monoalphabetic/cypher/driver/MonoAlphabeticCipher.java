@@ -12,6 +12,7 @@ public class MonoAlphabeticCipher {
 	private int encriptionOrDecription;
 	private String givenInputText;
 	private EncryptionAndDecryptionImpl encryptionAndDecription;
+	private FileProcessor fileProcessor;
 
 	public MonoAlphabeticCipher(int seed, int encriptionOrDecription) {
 		this.seed = seed;
@@ -19,7 +20,7 @@ public class MonoAlphabeticCipher {
 	}
 
 	private void doStuff(String givenInput, FileWriter output) {
-		FileProcessor fileProcessor = new FileProcessorImpl();
+		fileProcessor = new FileProcessorImpl();
 		givenInputText = fileProcessor.parsedInputText(givenInput);
 		encryptionAndDecription = new EncryptionAndDecryptionImpl(seed, givenInputText, output, encriptionOrDecription);
 		encryptionAndDecription.encriptOrDecrypt();

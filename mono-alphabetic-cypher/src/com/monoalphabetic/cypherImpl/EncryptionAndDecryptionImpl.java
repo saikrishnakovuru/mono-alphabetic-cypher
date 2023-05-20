@@ -21,7 +21,9 @@ public class EncryptionAndDecryptionImpl implements EncryptionAndDecryption {
 	private String cypherText;
 	private int encriptionOrDecription;
 	private Map<Character, Character> plainAndCypherPairs;
-//	private Set<Integer> indexSet;
+//	private Set<Integer> encriptOrDecriptIndexSet;
+	private AtomicInteger encriptOrDecriptIndex;
+	private AtomicInteger mapPairsIndex;
 
 	public EncryptionAndDecryptionImpl(int seed, String givenInputText, FileWriter output, int encriptionOrDecription) {
 		this.givenInputText = givenInputText;
@@ -31,12 +33,13 @@ public class EncryptionAndDecryptionImpl implements EncryptionAndDecryption {
 		cypherText = new String();
 		this.encriptionOrDecription = encriptionOrDecription;
 		plainAndCypherPairs = new HashMap<Character, Character>();
-//		indexSet = new LinkedHashSet<Integer>(alphabetsAndNumerics.length());
+//		encriptOrDecriptIndexSet = new LinkedHashSet<Integer>(alphabetsAndNumerics.length());
 	}
 
 	@Override
 	public void encriptOrDecrypt() {
-		AtomicInteger index = new AtomicInteger(0);
+		encriptOrDecriptIndex = new AtomicInteger(0);
+		mapPairsIndex = new AtomicInteger(0);
 		StringBuilder text = new StringBuilder();
 
 		generateRandomCypherText();
@@ -51,9 +54,14 @@ public class EncryptionAndDecryptionImpl implements EncryptionAndDecryption {
 //				plainAndCypherPairs.put(plainChars[i], cypherChars[i]);
 //			}
 
-			for (int i = 0; i < alphabetsAndNumerics.length(); i++) {
-				plainAndCypherPairs.put(alphabetsAndNumerics.charAt(i), cypherText.charAt(i));
-			}
+//			for (int i = 0; i < alphabetsAndNumerics.length(); i++) {
+//				plainAndCypherPairs.put(alphabetsAndNumerics.charAt(i), cypherText.charAt(i));
+//			}
+			alphabetsAndNumerics.chars().forEach(val -> {
+				plainAndCypherPairs.put(alphabetsAndNumerics.charAt(mapPairsIndex.get()),
+						cypherText.charAt(mapPairsIndex.get()));
+				mapPairsIndex.incrementAndGet();
+			});
 
 //			for (int i = 0; i < givenInputText.length(); i++) {
 //				if (plainAndCypherPairs.containsKey(givenInputText.charAt(i))
@@ -64,11 +72,12 @@ public class EncryptionAndDecryptionImpl implements EncryptionAndDecryption {
 //			}
 
 			givenInputText.chars().forEach(val -> {
-				if (plainAndCypherPairs.containsKey(givenInputText.charAt(index.get()))
-						|| plainAndCypherPairs.containsValue(givenInputText.charAt(index.get()))) {
-					text.append(encriptionOrDecription == 1 ? plainAndCypherPairs.get(givenInputText.charAt(index.get()))
-							: decription(index.get()));
-					index.incrementAndGet();
+				if (plainAndCypherPairs.containsKey(givenInputText.charAt(encriptOrDecriptIndex.get()))
+						|| plainAndCypherPairs.containsValue(givenInputText.charAt(encriptOrDecriptIndex.get()))) {
+					text.append(encriptionOrDecription == 1 ? encryption(encriptOrDecriptIndex.get())
+							: decription(encriptOrDecriptIndex.get()));
+					// increments the atomic integer while the foreach loop is being looped.
+					encriptOrDecriptIndex.incrementAndGet();
 				}
 			});
 
@@ -85,11 +94,24 @@ public class EncryptionAndDecryptionImpl implements EncryptionAndDecryption {
 		}
 	}
 
+	private Character encryption(int i) {
+		return plainAndCypherPairs.get(givenInputText.charAt(i));
+	}
+
 	private String decription(int i) {
+//		StringBuilder sb = new StringBuilder();
+//		plainAndCypherPairs.forEach((key, value) -> sb.append(key));
+//		return sb.toString();
 		String text = "";
-		for (Entry<Character, Character> entry : plainAndCypherPairs.entrySet()) {
-			if (entry.getValue() == givenInputText.charAt(i)) {
-				text += entry.getKey();
+//		for (Entry<Character, Character> entry : plainAndCypherPairs.entrySet()) {
+//			if (entry.getValue() == givenInputText.charAt(i)) {
+//				text += entry.getKey();
+//				break;
+//			}
+//		}
+		for (Character key : plainAndCypherPairs.keySet()) {
+			if (key == givenInputText.charAt(i)) {
+				text += key;
 				break;
 			}
 		}
@@ -109,13 +131,14 @@ public class EncryptionAndDecryptionImpl implements EncryptionAndDecryption {
 
 	public void generateRandomCypherText_____() {
 //		while (true) {
-//			indexSet.add(random.nextInt(alphabetsAndNumerics.length()));
-//			if (indexSet.size() == alphabetsAndNumerics.length())
+//			encriptOrDecriptIndexSet.add(random.nextInt(alphabetsAndNumerics.length()));
+//			if (encriptOrDecriptIndexSet.size() == alphabetsAndNumerics.length())
 //				break;
 //		}
 //
 //		for (int i = 0; i < alphabetsAndNumerics.length(); i++) {
-//			cypherText += alphabetsAndNumerics.charAt((int) indexSet.toArray()[i]);
+//			cypherText += alphabetsAndNumerics.charAt((int) encriptOrDecriptIndexSet.toArray()[i]);
+
 //		}
 	}
 }
